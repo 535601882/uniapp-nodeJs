@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "uni-app",
+  "usingComponents": {
+    "chat-view": "../../components/ChatView",
+    "image-gen-view": "../../components/ImageGenView",
+    "history-dialog": "../../components/HistoryDialog"
+  }
+}
