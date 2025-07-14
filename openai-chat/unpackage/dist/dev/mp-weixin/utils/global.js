@@ -2,6 +2,7 @@
 const globalUser = {
   openid: "",
   token: "",
+  refreshToken: "",
   info: null
 };
 exports.globalUser = globalUser;

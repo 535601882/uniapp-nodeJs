@@ -25,20 +25,29 @@
           </label>
         </view>
       </view>
-      <button class="gen-btn" @click="genImageStream" :loading="loading">流式生成图片</button>
+      <view class="image-upload-list">
+        <view v-for="(img, i) in uploadImages" :key="i" class="thumb-wrap">
+          <image :src="img" class="thumb-img" mode="aspectFill" @click="preview(img, 'upload')" />
+          <view class="delete-btn" @click.stop="removeImage(i)">×</view>
+        </view>
+        <view v-if="uploadImages.length < 10" class="thumb-wrap add-thumb" @click="chooseAndUploadImage">
+          <text v-if="!uploadLoading" class="plus">+</text>
+          <view v-else class="upload-loading">
+            <text class="loading-spinner"></text>
+          </view>
+        </view>
+      </view>
+      <button class="gen-btn" @click="genImageStream" :loading="loading">生成图片</button>
     </view>
-    <view class="progress-bar" v-if="loading">
-      <text>{{ statusText }}</text>
-      <progress :percent="progress" show-info stroke-width="6" />
-    </view>
-    <view class="result-list" v-if="images.length">
-      <image v-for="(img, i) in images" :key="i" :src="img" class="result-img" mode="aspectFill" @click="preview(img)" />
+    <view class="result-list" v-if="genImages.length">
+      <image v-for="(img, i) in genImages" :key="i" :src="img" class="result-img" mode="aspectFill" @click="preview(img, 'gen')" />
     </view>
   </view>
 </template>
 
 <script setup>
 import { globalUser } from '../utils/global'
+import {uploadFileWithToken, imageApi } from "../utils/api"
 import { ref } from 'vue';
 const prompt = ref('');
 const n = ref(1);
@@ -47,9 +56,45 @@ const size = ref('1024x1024');
 function onRadioChange(e) { size.value = e.detail.value }
 const sizes = ['1024x1024', '1536x1024', '1024x1536'];
 const loading = ref(false);
-const images = ref([]);
+const uploadImages = ref([]);
+const genImages = ref([]);
 const progress = ref(0);
 const statusText = ref('');
+const uploadLoading = ref(false);
+
+function chooseAndUploadImage() {
+  const max = 10 - uploadImages.value.length;
+  if (max <= 0) return;
+  uni.chooseImage({
+    count: max,
+    success: (chooseRes) => {
+      const filePaths = chooseRes.tempFilePaths;
+      uploadLoading.value = true;
+      let finished = 0;
+      filePaths.forEach(filePath => {
+        uploadFileWithToken({
+          url: '/api/image/upload',
+          filePath,
+          name: 'image'
+        }).then((res) => {
+          uploadImages.value.push(res.url);
+          uni.showToast({ title: '上传成功', icon: 'success' });
+        }).catch(e => {
+          uni.showToast({ title: '上传失败', icon: 'none' });
+        }).finally(() => {
+          finished++;
+          if (finished === filePaths.length) {
+            uploadLoading.value = false;
+          }
+        });
+      });
+    }
+  });
+}
+
+function removeImage(idx) {
+  uploadImages.value.splice(idx, 1);
+}
 
 function genImageStream() {
   if (!prompt.value.trim()) {
@@ -57,39 +102,31 @@ function genImageStream() {
     return;
   }
   loading.value = true;
-  images.value = [];
   progress.value = 0;
-  statusText.value = '生成中...';
+  genImages.value = [];
 
-  uni.request({
-    url: import.meta.env.VITE_BASE_URL + '/api/image',
-    method: 'POST',
-    data: {
+  imageApi({
       prompt: prompt.value,
       n: n.value,
-      size: size.value
-    },
-    header: {
-      'Content-Type': 'application/json',
-      token: globalUser.token || uni.getStorageSync('token') || ''
-    },
-    success: (res) => {
-      loading.value = false;
-      if (res.data && res.data.code === 0 && res.data.data && res.data.data.download_links) {
-        images.value = res.data.data.download_links;
-        statusText.value = '生成完成';
-      } else {
-        statusText.value = res.data.msg || '生成失败';
-      }
-    },
-    fail: () => {
-      loading.value = false;
-      statusText.value = '生成失败';
+      size: size.value,
+      images: uploadImages.value
+    }).then((data) => {
+      console.log('data',data)
+    loading.value = false;
+    if (data && data.download_links) {
+      genImages.value = data.download_links;
     }
+  }).catch((err) => {
+    loading.value = false;
+    statusText.value = err && err.msg ? err.msg : '生成失败';
   });
 }
-function preview(img) {
-  uni.previewImage({ urls: images.value, current: img });
+function preview(img, type = 'upload') {
+  if(type === 'upload') {
+    uni.previewImage({ urls: uploadImages.value, current: img });
+  } else {
+    uni.previewImage({ urls: genImages.value, current: img });
+  }
 }
 </script>
 
@@ -203,5 +240,75 @@ function preview(img) {
   align-items: center;
   justify-content: space-between;
   padding: 8rpx 0;
+}
+.image-upload-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24rpx;
+  margin-bottom: 24rpx;
+  .thumb-wrap {
+    position: relative;
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 16rpx;
+    overflow: hidden;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16rpx;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 32rpx;
+      height: 32rpx;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      font-size: 28rpx;
+      text-align: center;
+      line-height: 32rpx;
+      border-radius: 0 0 0 16rpx;
+      z-index: 2;
+    }
+  }
+  .add-thumb {
+    border: 2rpx dashed #cbd5e1;
+    background: #f9fafb;
+    cursor: pointer;
+    .plus {
+      font-size: 60rpx;
+      color: #cbd5e1;
+      line-height: 120rpx;
+      text-align: center;
+      width: 100%;
+      display: block;
+    }
+  }
+}
+.upload-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading-spinner {
+  width: 48rpx;
+  height: 48rpx;
+  border: 6rpx solid #cbd5e1;
+  border-top: 6rpx solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style> 

@@ -1,6 +1,6 @@
 "use strict";
 const common_vendor = require("../common/vendor.js");
-const utils_global = require("../utils/global.js");
+const utils_api = require("../utils/api.js");
 const _sfc_main = {
   __name: "ImageGenView",
   setup(__props) {
@@ -15,47 +15,74 @@ const _sfc_main = {
     }
     const sizes = ["1024x1024", "1536x1024", "1024x1536"];
     const loading = common_vendor.ref(false);
-    const images = common_vendor.ref([]);
+    const uploadImages = common_vendor.ref([]);
+    const genImages = common_vendor.ref([]);
     const progress = common_vendor.ref(0);
     const statusText = common_vendor.ref("");
+    const uploadLoading = common_vendor.ref(false);
+    function chooseAndUploadImage() {
+      const max = 10 - uploadImages.value.length;
+      if (max <= 0)
+        return;
+      common_vendor.index.chooseImage({
+        count: max,
+        success: (chooseRes) => {
+          const filePaths = chooseRes.tempFilePaths;
+          uploadLoading.value = true;
+          let finished = 0;
+          filePaths.forEach((filePath) => {
+            utils_api.uploadFileWithToken({
+              url: "/api/image/upload",
+              filePath,
+              name: "image"
+            }).then((res) => {
+              uploadImages.value.push(res.url);
+              common_vendor.index.showToast({ title: "上传成功", icon: "success" });
+            }).catch((e) => {
+              common_vendor.index.showToast({ title: "上传失败", icon: "none" });
+            }).finally(() => {
+              finished++;
+              if (finished === filePaths.length) {
+                uploadLoading.value = false;
+              }
+            });
+          });
+        }
+      });
+    }
+    function removeImage(idx) {
+      uploadImages.value.splice(idx, 1);
+    }
     function genImageStream() {
       if (!prompt.value.trim()) {
         common_vendor.index.showToast({ title: "请输入描述", icon: "none" });
         return;
       }
       loading.value = true;
-      images.value = [];
       progress.value = 0;
-      statusText.value = "生成中...";
-      common_vendor.index.request({
-        url: "http://localhost:3000/api/image",
-        method: "POST",
-        data: {
-          prompt: prompt.value,
-          n: n.value,
-          size: size.value
-        },
-        header: {
-          "Content-Type": "application/json",
-          token: utils_global.globalUser.token || common_vendor.index.getStorageSync("token") || ""
-        },
-        success: (res) => {
-          loading.value = false;
-          if (res.data && res.data.code === 0 && res.data.data && res.data.data.download_links) {
-            images.value = res.data.data.download_links;
-            statusText.value = "生成完成";
-          } else {
-            statusText.value = res.data.msg || "生成失败";
-          }
-        },
-        fail: () => {
-          loading.value = false;
-          statusText.value = "生成失败";
+      genImages.value = [];
+      utils_api.imageApi({
+        prompt: prompt.value,
+        n: n.value,
+        size: size.value,
+        images: uploadImages.value
+      }).then((data) => {
+        common_vendor.index.__f__("log", "at components/ImageGenView.vue:114", "data", data);
+        loading.value = false;
+        if (data && data.download_links) {
+          genImages.value = data.download_links;
         }
+      }).catch((err) => {
+        loading.value = false;
+        statusText.value = err && err.msg ? err.msg : "生成失败";
       });
     }
-    function preview(img) {
-      common_vendor.index.previewImage({ urls: images.value, current: img });
+    function preview(img, type = "upload") {
+      if (type === "upload") {
+        common_vendor.index.previewImage({ urls: uploadImages.value, current: img });
+      } else {
+        common_vendor.index.previewImage({ urls: genImages.value, current: img });
+      }
     }
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -77,20 +104,29 @@ const _sfc_main = {
             e: s
           };
         }),
-        g: common_vendor.o(genImageStream),
-        h: loading.value,
-        i: loading.value
-      }, loading.value ? {
-        j: common_vendor.t(statusText.value),
-        k: progress.value
-      } : {}, {
-        l: images.value.length
-      }, images.value.length ? {
-        m: common_vendor.f(images.value, (img, i, i0) => {
+        g: common_vendor.f(uploadImages.value, (img, i, i0) => {
+          return {
+            a: img,
+            b: common_vendor.o(($event) => preview(img, "upload"), i),
+            c: common_vendor.o(($event) => removeImage(i), i),
+            d: i
+          };
+        }),
+        h: uploadImages.value.length < 10
+      }, uploadImages.value.length < 10 ? common_vendor.e({
+        i: !uploadLoading.value
+      }, !uploadLoading.value ? {} : {}, {
+        j: common_vendor.o(chooseAndUploadImage)
+      }) : {}, {
+        k: common_vendor.o(genImageStream),
+        l: loading.value,
+        m: genImages.value.length
+      }, genImages.value.length ? {
+        n: common_vendor.f(genImages.value, (img, i, i0) => {
           return {
             a: i,
             b: img,
-            c: common_vendor.o(($event) => preview(img), i)
+            c: common_vendor.o(($event) => preview(img, "gen"), i)
           };
         })
       } : {});

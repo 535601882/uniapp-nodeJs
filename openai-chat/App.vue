@@ -21,8 +21,11 @@ export default {
 						globalUser.openid = openid;
 						uni.setStorageSync('openid', openid);
 						globalUser.token = res.data.token;
+						//refreshToken
+						globalUser.refreshToken = res.data.refreshToken;
 						globalUser.info = res.data;
 						uni.setStorageSync('token', res.data.token);
+						uni.setStorageSync('refreshToken', res.data.refreshToken);
 					}
 				});
 			}

@@ -23,18 +23,20 @@ const _sfc_main = {
             utils_global.globalUser.openid = openid;
             common_vendor.index.setStorageSync("openid", openid);
             utils_global.globalUser.token = res.data.token;
+            utils_global.globalUser.refreshToken = res.data.refreshToken;
             utils_global.globalUser.info = res.data;
             common_vendor.index.setStorageSync("token", res.data.token);
+            common_vendor.index.setStorageSync("refreshToken", res.data.refreshToken);
           }
         });
       }
     });
   },
   onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:32", "App Show");
+    common_vendor.index.__f__("log", "at App.vue:35", "App Show");
   },
   onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:35", "App Hide");
+    common_vendor.index.__f__("log", "at App.vue:38", "App Hide");
   }
 };
 function createApp() {

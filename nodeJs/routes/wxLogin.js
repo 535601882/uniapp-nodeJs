@@ -3,7 +3,12 @@ const router = express.Router();
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
+// token 生成
 const generateToken = (openid) => {
+  return jwt.sign({ openid }, process.env.JWT_SECRET, { expiresIn: '1m' });
+};
+// 刷新token 生成
+const generateRefreshToken = (openid) => {
   return jwt.sign({ openid }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
@@ -25,6 +30,8 @@ router.post('/',async  (req, res) => {
 
     // 3. 生成自定义登录态（如JWT）
     const token = generateToken(openid);
+    // 4. 刷新token
+    const refreshToken = generateRefreshToken(openid);
 
     // 假数据
     const user = {  
@@ -32,6 +39,7 @@ router.post('/',async  (req, res) => {
         nickname: '测试用户',
         avatar: 'https://cdn.jsdelivr.net/gh/baimingxuan/media-host@master/img/avatar.png',
         token: token,
+        refreshToken: refreshToken,
         email: 'test@example.com',
     };
     // 4. 返回token给前端

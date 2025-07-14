@@ -1,1 +1,1 @@
-{"version":3,"file":"global.js","sources":["utils/global.js"],"sourcesContent":["export const globalUser = {\r\n  openid: '',\r\n  token: '',\r\n  info: null\r\n} "],"names":[],"mappings":";AAAY,MAAC,aAAa;AAAA,EACxB,QAAQ;AAAA,EACR,OAAO;AAAA,EACP,MAAM;AACR;;"}
+{"version":3,"file":"global.js","sources":["utils/global.js"],"sourcesContent":["export const globalUser = {\r\n  openid: '',\r\n  token: '',\r\n  refreshToken: '',\r\n  info: null\r\n} "],"names":[],"mappings":";AAAY,MAAC,aAAa;AAAA,EACxB,QAAQ;AAAA,EACR,OAAO;AAAA,EACP,cAAc;AAAA,EACd,MAAM;AACR;;"}

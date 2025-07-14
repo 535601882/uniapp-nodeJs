@@ -10,28 +10,37 @@ const balanceRouter = require('./routes/balance');
 const wxLoginRouter = require('./routes/wxLogin');
 const app = express();
 const jwt = require('jsonwebtoken');
-
+const fileUpload = require('express-fileupload');
+app.use((req, res, next) => {
+  console.log('收到请求:', req.originalUrl);
+  next();
+});
 app.use(express.json());
+app.use(fileUpload());
 
 // 增加中间件，校验header是否有token，没有则返回401
 // 增加白名单，白名单中的接口不校验token
-const whiteList = ['/api/wxlogin'];
+const whiteList = ['/api/wxlogin','/api/token/refresh'];
 app.use((req, res, next) => {
+  // 跳过不需要校验的路由
   const token = req.headers.token;
   console.log("req.originalUrl",req.originalUrl)
   if(whiteList.includes(req.originalUrl)) {
-    next();
-    return;
+    return next();
   }
   if (!token) {
-    return res.status(401).json({ code: 401, msg: '未授权', data: null });
+    return res.status(401).json({ code: 401, msg: '未提供token', data: null });
   }
-  // 校验token是否有效
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  if (!decoded) {
-    return res.status(401).json({ code: 401, msg: '未授权', data: null });
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = user;
+    next();
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ code: 401, msg: 'token已过期', data: null });
+    }
+    return res.status(401).json({ code: 401, msg: 'token无效', data: null });
   }
-  next();
 });
 
 app.use('/api/chat', chatRouter);
@@ -41,6 +50,7 @@ app.use('/api/user', userRouter);
 app.use('/api/token', tokenRouter);
 app.use('/api/balance', balanceRouter);
 app.use('/api/wxlogin', wxLoginRouter);
+
 
 // 统一404
 app.use((req, res) => {
