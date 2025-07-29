@@ -32,7 +32,7 @@ function request(options, retry = true) {
     const token = uni.getStorageSync('token') || globalUser.token || '';
 
     uni.request({
-      timeout: 60000, // 60秒
+      timeout: 300000, // 300秒 (5分钟)
       ...options,
       url: BASE + options.url,
       header: {

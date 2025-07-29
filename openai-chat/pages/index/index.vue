@@ -1,8 +1,11 @@
 <template>
   <view class="main-page">
+    <!-- 背景图 -->
+    <image class="bg-image" src="/static/bg.png" mode="aspectFill" />
+    <!-- 渐变蒙层 -->
+    <view class="bg-gradient"></view>
     <view class="content-wrapper">
-      <view class="header-section">
-        <image src="/static/ai.png" class="header-logo" mode="aspectFit" />
+      <view class="header-section" style="height: 400rpx; display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <text class="header-title">AI创作引擎</text>
         <text class="header-subtitle">即刻将您的想法变为现实。</text>
       </view>
@@ -14,7 +17,7 @@
           placeholder="描述您的想法... (例如：一只穿着宇航服的猫，超写实风格)"
           :auto-height="true"
         />
-        
+
         <view class="image-preview-list">
           <view v-for="(img, i) in uploadImages" :key="i" class="thumb-item">
             <image :src="img" class="thumb-image" mode="aspectFill" />
@@ -35,8 +38,8 @@
       <view v-if="resultImage" class="result-section">
         <image :src="resultImage" class="result-image" mode="widthFix" @click="previewResult" />
         <view class="result-actions">
-          <button class="action-btn">保存</button>
-          <button class="action-btn">分享</button>
+          <button class="action-btn" @click="saveImage">保存</button>
+          <button class="action-btn" open-type="share">分享</button>
         </view>
       </view>
     </view>
@@ -46,6 +49,9 @@
 <script setup>
 import { ref } from 'vue';
 import { imageApi, uploadFileWithToken } from '@/utils/api';
+
+// 分享给好友
+import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
 
 const prompt = ref('');
 const uploadImages = ref([]);
@@ -116,43 +122,128 @@ const previewResult = () => {
   }
 };
 
+const saveImage = () => {
+  if (!resultImage.value) {
+    uni.showToast({ title: '没有可保存的图片', icon: 'none' });
+    return;
+  }
+  uni.showLoading({ title: '保存中...' });
+  uni.downloadFile({
+    url: resultImage.value,
+    success: (res) => {
+      if (res.statusCode === 200) {
+        uni.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success: () => {
+            uni.hideLoading();
+            uni.showToast({ title: '保存成功', icon: 'success' });
+          },
+          fail: (err) => {
+            uni.hideLoading();
+            if (err.errMsg === 'saveImageToPhotosAlbum:fail auth deny') {
+              uni.showModal({
+                title: '提示',
+                content: '请授权保存图片到相册',
+                showCancel: false,
+                success: () => {
+                  uni.openSetting();
+                }
+              });
+            } else {
+              uni.showToast({ title: '保存失败', icon: 'none' });
+            }
+          }
+        });
+      } else {
+        uni.hideLoading();
+        uni.showToast({ title: '图片下载失败', icon: 'none' });
+      }
+    },
+    fail: (err) => {
+      uni.hideLoading();
+      uni.showToast({ title: '图片下载失败', icon: 'none' });
+    }
+  });
+};
+
+// 分享给好友
+onShareAppMessage((res) => {
+  if (res.from === 'button') { // 来自页面内转发按钮
+    console.log('分享按钮点击', res.target);
+  }
+  return {
+    title: '快来体验AI创作，生成你的专属图片！', // 分享标题
+    path: '/pages/index/index',
+    imageUrl: resultImage.value || '/static/logo.png'
+  };
+});
+
+// 分享到朋友圈 (需要小程序配置)
+onShareTimeline(() => {
+  return {
+    title: 'AI创作，一键生成惊艳图片！',
+    query: 'from=timeline',
+    imageUrl: resultImage.value || '/static/logo.png'
+  };
+});
+
 </script>
 
 <style scoped lang="scss">
 .main-page {
   background-color: #111827;
   min-height: 100vh;
-  padding: 30rpx;
+  /* Removed padding-top to allow header-section to start from top */
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  padding-bottom: 30rpx;
+  position: relative;
 }
-.content-wrapper {
-  width: 100%;
+.bg-image {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 70vh;
+  z-index: 0;
+  pointer-events: none; // 防止遮挡内容
+}
+.bg-gradient {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 70vh;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(17,24,39,0) 60%, #111827 100%);
+}
+.header-title{
+  font-weight: 700;
+  color: #fff;
+  font-size: 60rpx;
+  text-shadow: 1px 1px 2px #374151;
+}
+.header-subtitle{
+  font-weight: 400;
+  color: #fff;
+  font-size: 32rpx;
+  text-shadow: 1px 1px 2px #374151;
 }
 .header-section {
   text-align: center;
   padding: 40rpx 0;
-  .header-logo {
-    width: 120rpx;
-    height: 120rpx;
-  }
-  .header-title {
-    display: block;
-    font-size: 48rpx;
-    font-weight: bold;
-    color: #FFFFFF;
-    margin-top: 20rpx;
-  }
-  .header-subtitle {
-    display: block;
-    font-size: 28rpx;
-    color: #9CA3AF;
-    margin-top: 10rpx;
-  }
+  height: 400rpx; /* Fixed height for the background section */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1; /* Ensure it's above other elements if needed */
 }
 .form-card {
-  background-color: #1F2937;
+  background-color: rgb(31 41 55 / 80%);
   border-radius: 24rpx;
   padding: 30rpx;
-  margin-top: 30rpx;
+  margin-top: -100rpx; /* Pull form-card up to overlap with header-section */
+  position: relative;
+  z-index: 2; /* Ensure it's above header-section */
 }
 .prompt-input {
   width: 100%;

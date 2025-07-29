@@ -1,12 +1,60 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/gallery/index",
+    "pages/profile/index"
+  ],
+  "subPackages": [
+    {
+      "root": "pkg_history",
+      "pages": [
+        "pages/list",
+        "pages/detail"
+      ]
+    },
+    {
+      "root": "pkg_user",
+      "pages": [
+        "pages/settings",
+        "pages/credits",
+        "pages/feedback",
+        "pages/tasks",
+        "pages/agreement",
+        "pages/privacy"
+      ]
+    }
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "AI创作引擎",
+    "navigationBarBackgroundColor": "#1F2937",
+    "backgroundColor": "#111827"
+  },
+  "tabBar": {
+    "color": "#9CA3AF",
+    "selectedColor": "#FFFFFF",
+    "backgroundColor": "#111827",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "创作",
+        "iconPath": "static/create.png",
+        "selectedIconPath": "static/create-active.png"
+      },
+      {
+        "pagePath": "pages/gallery/index",
+        "text": "画廊",
+        "iconPath": "static/gallery.png",
+        "selectedIconPath": "static/gallery-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/me.png",
+        "selectedIconPath": "static/me-active.png"
+      }
+    ]
   },
   "usingComponents": {}
 }

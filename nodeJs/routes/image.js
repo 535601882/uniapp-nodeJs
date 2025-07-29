@@ -81,6 +81,7 @@ router.post('/', async (req, res) => {
       messages,
       stream: false
     };
+    console.log('params', params);
     const response = await axios.post(process.env.OPENAI_BASE_URL+'/chat/completions', params, {
       headers: {
         'Content-Type': 'application/json',
@@ -89,20 +90,20 @@ router.post('/', async (req, res) => {
       timeout: 540000
     });
     // 提取“点击下载”链接
-    const downloadMatch = response.data.choices?.[0]?.message?.content?.match(/\[点击下载\]\((https?:\/\/[^\s)]+\.png)\)/i);
-    const download_links = downloadMatch || [];
+    const downloadMatch = response.data.choices?.[0]?.message?.content?.match(/https?:\/\/[^\s)]+\.png/i); // 直接匹配URL
+    const imageUrl = downloadMatch ? downloadMatch[0] : null;
 
     // 保存创作记录到数据库
-    if (download_links.length > 0) {
+    if (imageUrl) {
       await Creation.create({
         user: userId,
         prompt: prompt,
-        image_url: download_links[0],
+        image_url: imageUrl,
         is_public: false, // 默认不公开
       });
     }
 
-    res.json({ code: 0, msg: '成功', data: { ...response.data, download_links } });
+    res.json({ code: 0, msg: '成功', data: { ...response.data, download_links: imageUrl ? [imageUrl] : [] } });
     return;
   } catch (err) {
     console.error('生图服务异常:', err.response?.data || err.message);
@@ -128,7 +129,7 @@ router.post('/upload', async (req, res) => {
     formData.append('image', base64); // 直接传 base64
     const imgbbRes = await axios.post(process.env.IMGBB_HOST, formData, {
       headers: formData.getHeaders(),
-      timeout: 600000 
+      timeout: 600000
     });
     // console.log("imgbbRes",imgbbRes)
     if (imgbbRes.data && imgbbRes.data.success && imgbbRes.data.data && imgbbRes.data.data.url) {

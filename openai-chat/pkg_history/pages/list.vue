@@ -7,11 +7,11 @@
         <text class="empty-subtext">在主页开始创作吧！</text>
       </view>
       <view v-else class="history-list">
-        <view v-for="item in items" :key="item.id" class="history-item" @click="goToDetail(item.id)">
+        <view v-for="item in items" :key="item._id" class="history-item" @click="goToDetail(item._id)">
           <image :src="item.image_url" class="item-thumbnail" mode="aspectFill" />
           <view class="item-info">
             <text class="item-prompt">{{ item.prompt }}</text>
-            <text class="item-date">{{ new Date(item.created_at).toLocaleString() }}</text>
+            <text class="item-date">{{ new Date(item.createdAt).toLocaleString() }}</text>
           </view>
           <text class="arrow">></text>
         </view>

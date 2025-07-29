@@ -5,7 +5,7 @@
       <text class="prompt-title">提示词</text>
       <text class="prompt-text">{{ item.prompt }}</text>
       <view class="metadata">
-        <text>创建时间: {{ new Date(item.created_at).toLocaleString() }}</text>
+        <text>创建时间: {{ new Date(item.createdAt).toLocaleString() }}</text>
       </view>
     </view>
     <view class="actions-card">
