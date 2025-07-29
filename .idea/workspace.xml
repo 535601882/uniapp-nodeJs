@@ -4,9 +4,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fb2c06f1-6c09-49e4-aa30-618245879d8c" name="更改" comment="微信小程序+openai">
+    <list default="true" id="fb2c06f1-6c09-49e4-aa30-618245879d8c" name="更改" comment="feat(微信小程序): 集成 OpenAI 聊天和图像生成功能&#10;&#10;- 新增 refreshToken 机制，支持 token 过期后自动刷新&#10;- 实现图像生成接口，支持用户上传图片并生成新图片&#10;- 优化用户登录流程，增加 refreshToken 生成和存储&#10;- 重构 API 请求方法，提高代码复用性和可维护性">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/routes/balance.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/balance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/routes/history.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/history.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/routes/image.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/image.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/routes/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/routes/wxLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/wxLogin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages/index/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/pages/index/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/pages/index/index.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/utils/api.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/utils/api.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ChatView.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ChatView.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ChatView.wxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ChatView.wxss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/HistoryDialog.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/HistoryDialog.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/HistoryDialog.wxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/HistoryDialog.wxss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ImageGenView.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ImageGenView.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ImageGenView.wxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ImageGenView.wxss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/project.config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/utils/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/utils/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,18 +53,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "535601882"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;535601882&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/535601882/uniapp-nodeJs.git",
-    "accountId": "e091ecdb-58bc-4bba-998c-6e7c627009ea"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/535601882/uniapp-nodeJs.git&quot;,
+    &quot;accountId&quot;: &quot;e091ecdb-58bc-4bba-998c-6e7c627009ea&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -44,7 +81,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "E:/Code/OpenAi",
+    "last_opened_file_path": "E:/Code/OpenAi/openai-chat/static",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -54,6 +91,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Code\OpenAi\openai-chat\static" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -71,6 +113,8 @@
       <updated>1751710945328</updated>
       <workItem from="1751710946593" duration="779000" />
       <workItem from="1751711741829" duration="1007000" />
+      <workItem from="1752487121754" duration="715000" />
+      <workItem from="1753776556833" duration="11462000" />
     </task>
     <task id="LOCAL-00001" summary="微信小程序+openai">
       <option name="closed" value="true" />
@@ -88,7 +132,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751712190817</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat(微信小程序): 集成 OpenAI 聊天和图像生成功能&#10;&#10;- 新增 refreshToken 机制，支持 token 过期后自动刷新&#10;- 实现图像生成接口，支持用户上传图片并生成新图片&#10;- 优化用户登录流程，增加 refreshToken 生成和存储&#10;- 重构 API 请求方法，提高代码复用性和可维护性">
+      <option name="closed" value="true" />
+      <created>1752488213697</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1752488213697</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,6 +159,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="微信小程序+openai" />
-    <option name="LAST_COMMIT_MESSAGE" value="微信小程序+openai" />
+    <MESSAGE value="feat(微信小程序): 集成 OpenAI 聊天和图像生成功能&#10;&#10;- 新增 refreshToken 机制，支持 token 过期后自动刷新&#10;- 实现图像生成接口，支持用户上传图片并生成新图片&#10;- 优化用户登录流程，增加 refreshToken 生成和存储&#10;- 重构 API 请求方法，提高代码复用性和可维护性" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(微信小程序): 集成 OpenAI 聊天和图像生成功能&#10;&#10;- 新增 refreshToken 机制，支持 token 过期后自动刷新&#10;- 实现图像生成接口，支持用户上传图片并生成新图片&#10;- 优化用户登录流程，增加 refreshToken 生成和存储&#10;- 重构 API 请求方法，提高代码复用性和可维护性" />
   </component>
 </project>

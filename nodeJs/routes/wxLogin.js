@@ -2,17 +2,18 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User'); // 引入User模型
 
 // token 生成
-const generateToken = (openid) => {
-  return jwt.sign({ openid }, process.env.JWT_SECRET, { expiresIn: '1m' });
+const generateToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Token有效期延长到1小时
 };
 // 刷新token 生成
-const generateRefreshToken = (openid) => {
-  return jwt.sign({ openid }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const generateRefreshToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '7d' }); // Refresh Token有效期7天
 };
 
-router.post('/',async  (req, res) => {
+router.post('/', async (req, res) => {
   const { code } = req.body;
   const appid = process.env.APPID;
   const secret = process.env.APPSECRET;
@@ -23,28 +24,45 @@ router.post('/',async  (req, res) => {
       `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`
     );
 
+    console.log('result.data',result.data)
     const { openid, session_key, unionid } = result.data;
-    
-    // 2. 根据openid查询或创建用户（数据库操作）
-    // const user = await db.findOrCreateUser({ openid, unionid });
+
+    if (!openid) {
+      return res.status(400).json({ code: 400, msg: '获取openid失败', data: null });
+    }
+
+    // 2. 根据openid查询或创建用户
+    let user = await User.findOne({ openid });
+
+    if (!user) {
+      // 如果用户不存在，则创建新用户
+      user = await User.create({
+        openid,
+        nickname: `微信用户_${openid.substring(0, 8)}`, // 初始昵称
+        avatar_url: `https://i.pravatar.cc/150?u=${openid}`, // 初始头像
+        credits: 100, // 初始积分
+      });
+    }
 
     // 3. 生成自定义登录态（如JWT）
-    const token = generateToken(openid);
+    const token = generateToken(user._id);
     // 4. 刷新token
-    const refreshToken = generateRefreshToken(openid);
+    const refreshToken = generateRefreshToken(user._id);
 
-    // 假数据
-    const user = {  
-        openid,
-        nickname: '测试用户',
-        avatar: 'https://cdn.jsdelivr.net/gh/baimingxuan/media-host@master/img/avatar.png',
-        token: token,
-        refreshToken: refreshToken,
-        email: 'test@example.com',
-    };
-    // 4. 返回token给前端
-    res.json({ ...user });
+    // 5. 返回token和用户信息给前端
+    res.json({
+      code: 0,
+      msg: '登录成功',
+      data: {
+        token,
+        refreshToken,
+        nickname: user.nickname,
+        avatar: user.avatar_url,
+        credits: user.credits, // 返回用户积分
+      },
+    });
   } catch (err) {
+    console.error('微信登录服务异常:', err.response?.data || err.message);
     res.status(500).json({ code: 500, msg: '服务器内部错误', data: null });
   }
 });

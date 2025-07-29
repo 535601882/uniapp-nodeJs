@@ -1,6 +1,5 @@
 <script>
 import { globalUser } from '@/utils/global';
-import { getUserApi } from '@/utils/api';
 export default {
 	onLaunch: function() {
 		console.log('App Launch');
@@ -12,14 +11,12 @@ export default {
 				console.log("code",code)
 				// 假设后端有/api/wxlogin?code=xxx接口返回openid
 				uni.request({
-					url: import.meta.env.VITE_BASE_URL+'/api/wxlogin',
+					url: import.meta.env.VITE_BASE_URL+'/api/user/wxlogin',
 					method: 'POST',
 					data: { code },
 					success: (res) => {
 						console.log("res",res)
-						const openid = res.data.openid;
-						globalUser.openid = openid;
-						uni.setStorageSync('openid', openid);
+            res = res.data
 						globalUser.token = res.data.token;
 						//refreshToken
 						globalUser.refreshToken = res.data.refreshToken;

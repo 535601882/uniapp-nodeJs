@@ -1,17 +1,74 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},
-	"uniIdRouter": {}
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "AI Creator"
+      }
+    },
+    {
+      "path": "pages/gallery/index",
+      "style": {
+        "navigationBarTitleText": "Gallery"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "Profile"
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "pkg_history",
+      "pages": [
+        { "path": "pages/list" },
+        { "path": "pages/detail" }
+      ]
+    },
+    {
+      "root": "pkg_user",
+      "pages": [
+        { "path": "pages/settings" },
+        { "path": "pages/credits" },
+        { "path": "pages/feedback" },
+        { "path": "pages/tasks" },
+        { "path": "pages/agreement" },
+        { "path": "pages/privacy" }
+      ]
+    }
+  ],
+  "tabBar": {
+    "color": "#9CA3AF",
+    "selectedColor": "#FFFFFF",
+    "backgroundColor": "#111827",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "创作",
+        "iconPath": "static/create.png",
+        "selectedIconPath": "static/create-active.png"
+      },
+      {
+        "pagePath": "pages/gallery/index",
+        "text": "画廊",
+        "iconPath": "static/gallery.png",
+        "selectedIconPath": "static/gallery-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/me.png",
+        "selectedIconPath": "static/me-active.png"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "Gemini AI",
+    "navigationBarBackgroundColor": "#1F2937",
+    "backgroundColor": "#111827"
+  }
 }
