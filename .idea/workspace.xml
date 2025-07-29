@@ -6,16 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="fb2c06f1-6c09-49e4-aa30-618245879d8c" name="更改" comment="feat(nodeJs): 重构后端接口并添加新功能&#10;&#10;-重构了用户认证和 token 刷新逻辑&#10;- 新增了积分记录、创作历史等相关接口&#10;- 添加了公共画廊和通用 API接口&#10;- 优化了错误处理和日志记录&#10;-调整了数据库连接逻辑">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJs/routes/image.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/image.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages/index/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pkg_history/pages/detail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pkg_history/pages/detail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pkg_history/pages/list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pkg_history/pages/list.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/utils/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/README.md" afterDir="false" />
     </list>
     <list id="9f328673-c14c-45ba-92b6-d1050e612890" name="不提交" comment="">
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" afterDir="false" />
@@ -110,7 +103,7 @@
       <workItem from="1751710946593" duration="779000" />
       <workItem from="1751711741829" duration="1007000" />
       <workItem from="1752487121754" duration="715000" />
-      <workItem from="1753776556833" duration="17723000" />
+      <workItem from="1753776556833" duration="18384000" />
     </task>
     <task id="LOCAL-00001" summary="微信小程序+openai">
       <option name="closed" value="true" />
@@ -144,7 +137,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753798887768</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat(nodeJs): 重构后端接口并添加新功能&#10;&#10;-重构了用户认证和 token 刷新逻辑&#10;- 新增了积分记录、创作历史等相关接口&#10;- 添加了公共画廊和通用 API接口&#10;- 优化了错误处理和日志记录&#10;-调整了数据库连接逻辑">
+      <option name="closed" value="true" />
+      <created>1753805689894</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1753805689894</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

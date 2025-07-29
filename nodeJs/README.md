@@ -15,7 +15,7 @@ npm install
 
 ```
 OPENAI_API_KEY=你的API密钥
-OPENAI_BASE_URL=https://api.tu-zi.com/v1
+OPENAI_BASE_URL=
 OPENAI_MODEL=gpt-4o-all
 PORT=3000
 ```
@@ -114,8 +114,5 @@ nodeJs/
 - 如需跨域，已默认支持CORS
 
 
----
 
-如需更多帮助请联系开发者。
-
-如需前端uniApp代码，请查看uniApp目录。 
+如需前端uniApp代码，请查看uniApp目录。

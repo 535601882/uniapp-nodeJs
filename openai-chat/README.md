@@ -42,7 +42,7 @@ npm install
 在根目录下创建 `.env` 文件，配置后端 API 地址，例如：
 
 ```
-VITE_BASE_URL=https://your-backend-api.com
+VITE_BASE_URL=
 ```
 
 3. 运行项目（以 H5 为例）：
@@ -67,4 +67,4 @@ npm run dev:h5
 
 ## 联系与反馈
 
-如有问题或建议，欢迎提交 issue 或联系开发者。 
+如有问题或建议，欢迎提交 issue 或联系开发者。
