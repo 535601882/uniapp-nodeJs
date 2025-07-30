@@ -141,7 +141,9 @@ export const userApi = {
 };
 
 export const imageApi = {
-  generate: (data) => request({ url: '/api/image', method: 'POST', data }),
+  submitGeneration: (data) => request({ url: '/api/image', method: 'POST', data }),
+  getGenerationTasks: (params) => request({ url: '/api/image/tasks', method: 'GET', data: params }),
+  getGenerationTaskDetail: (taskId) => request({ url: `/api/image/tasks/${taskId}`, method: 'GET' }),
 };
 
 export const historyApi = {

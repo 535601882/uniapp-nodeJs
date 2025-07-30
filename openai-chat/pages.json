@@ -44,6 +44,13 @@
         { "path": "pages/agreement" },
         { "path": "pages/privacy" }
       ]
+    },
+    {
+      "root": "pages/my_creations",
+      "pages": [
+        { "path": "index", "style": { "navigationBarTitleText": "我的创作" } },
+        { "path": "detail", "style": { "navigationBarTitleText": "创作详情" } }
+      ]
     }
   ],
   "tabBar": {

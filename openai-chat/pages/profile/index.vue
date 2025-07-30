@@ -11,6 +11,11 @@
     <view class="menu-list">
       <view class="menu-item" @click="navigateTo('/pkg_history/pages/list')">
         <text class="menu-icon">📜</text>
+        <text>我的历史</text>
+        <text class="arrow">></text>
+      </view>
+      <view class="menu-item" @click="navigateTo('/pages/my_creations/index')">
+        <text class="menu-icon">🎨</text>
         <text>我的创作</text>
         <text class="arrow">></text>
       </view>
@@ -76,6 +81,7 @@ const getUserProfile = () => {
   uni.getUserProfile({
     desc: '用于展示您的头像和昵称',
     success: (res) => {
+      console.log('用户信息:', res)
       const { nickName, avatarUrl } = res.userInfo;
       user.value.nickname = nickName;
       user.value.avatar_url = avatarUrl;

@@ -4,26 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fb2c06f1-6c09-49e4-aa30-618245879d8c" name="更改" comment="docs(README): 更新项目文档和截图&#10;&#10;- 重构了 README.md 文件，增加了项目概述、技术栈、核心功能等详细信息&#10;- 添加了项目截图展示，包括首页、个人中心、画廊等界面&#10;- 更新了环境变量配置说明，移除了不必要的 API 地址&#10;- 精简了联系与反馈信息">
+    <list default="true" id="fb2c06f1-6c09-49e4-aa30-618245879d8c" name="更改" comment="feat(gallery): 添加画廊作品详情页面并优化点赞功能&#10;&#10;- 新增画廊作品详情页面，展示作品信息和点赞状态&#10;- 优化点赞功能，使用 likedBy 数组记录点赞用户&#10;- 添加保存图片功能&#10;- 更新画廊列表页面，修复点赞状态显示">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJs/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJs/models/Creation.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/models/Creation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJs/routes/gallery.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/gallery.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJs/routes/image.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJs/routes/image.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/pages.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pages/gallery/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages/gallery/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pkg_user/pages/credits.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pkg_user/pages/credits.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/pages/index/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages/index/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/pages/profile/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages/profile/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/utils/api.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/utils/api.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/utils/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/utils/api.js" afterDir="false" />
     </list>
-    <list id="9f328673-c14c-45ba-92b6-d1050e612890" name="不提交" comment="">
+    <list id="9f328673-c14c-45ba-92b6-d1050e612890" name="不提交" comment="不提交">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/pages/index/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/pages/index/index.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ChatView.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ChatView.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/components/ChatView.wxml" beforeDir="false" />
@@ -40,7 +39,6 @@
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/pages/index/index.wxss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/project.config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/utils/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,37 +61,21 @@
   }
 }</component>
   <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/utils/api.js">
+    <file path="$PROJECT_DIR$/.idea/workspace.xml">
       <ranges>
-        <range start1="4" end1="5" start2="4" end2="28" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="6" end1="6" start2="29" end2="30" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="7" end1="10" start2="31" end2="33" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="14" end1="16" start2="37" end2="38" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="17" end1="22" start2="39" end2="44" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="26" end1="28" start2="48" end2="50" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="34" end1="36" start2="56" end2="58" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="51" end1="51" start2="73" end2="74" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="56" end1="57" start2="79" end2="80" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="58" end1="60" start2="81" end2="82" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="64" end1="66" start2="86" end2="87" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="67" end1="71" start2="88" end2="91" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="72" end1="72" start2="92" end2="93" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="73" end1="73" start2="94" end2="95" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="74" end1="80" start2="96" end2="105" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="85" end1="89" start2="110" end2="111" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="92" end1="123" start2="114" end2="159" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
-        <range start1="125" end1="125" start2="161" end2="162" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/app.js">
-      <ranges>
-        <range start1="6" end1="6" start2="6" end2="17" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
-        <range start1="9" end1="10" start2="20" end2="21" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="14" end1="15" start2="25" end2="26" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="16" end1="17" start2="27" end2="28" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="20" end1="24" start2="31" end2="33" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="35" end1="36" start2="44" end2="45" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
-        <range start1="38" end1="39" start2="47" end2="48" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
+        <range start1="6" end1="7" start2="6" end2="7" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="8" end1="11" start2="8" end2="9" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="12" end1="14" start2="10" end2="12" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="16" end1="18" start2="14" end2="14" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="19" end1="19" start2="15" end2="16" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="22" end1="23" start2="19" end2="21" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="26" end1="26" start2="24" end2="25" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="42" end1="43" start2="41" end2="41" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="65" end1="66" start2="63" end2="64" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="67" end1="96" start2="65" end2="78" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="149" end1="150" start2="131" end2="132" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
+        <range start1="199" end1="200" start2="181" end2="190" changelist="9f328673-c14c-45ba-92b6-d1050e612890" />
+        <range start1="221" end1="222" start2="211" end2="214" changelist="fb2c06f1-6c09-49e4-aa30-618245879d8c" />
       </ranges>
     </file>
   </component>
@@ -147,7 +129,7 @@
       <workItem from="1751710946593" duration="779000" />
       <workItem from="1751711741829" duration="1007000" />
       <workItem from="1752487121754" duration="715000" />
-      <workItem from="1753776556833" duration="20877000" />
+      <workItem from="1753776556833" duration="29282000" />
     </task>
     <task id="LOCAL-00001" summary="微信小程序+openai">
       <option name="closed" value="true" />
@@ -219,6 +201,8 @@
     <MESSAGE value="feat(微信小程序): 集成 OpenAI 聊天和图像生成功能&#10;&#10;- 新增 refreshToken 机制，支持 token 过期后自动刷新&#10;- 实现图像生成接口，支持用户上传图片并生成新图片&#10;- 优化用户登录流程，增加 refreshToken 生成和存储&#10;- 重构 API 请求方法，提高代码复用性和可维护性" />
     <MESSAGE value="feat(nodeJs): 重构后端接口并添加新功能&#10;&#10;-重构了用户认证和 token 刷新逻辑&#10;- 新增了积分记录、创作历史等相关接口&#10;- 添加了公共画廊和通用 API接口&#10;- 优化了错误处理和日志记录&#10;-调整了数据库连接逻辑" />
     <MESSAGE value="docs(README): 更新项目文档和截图&#10;&#10;- 重构了 README.md 文件，增加了项目概述、技术栈、核心功能等详细信息&#10;- 添加了项目截图展示，包括首页、个人中心、画廊等界面&#10;- 更新了环境变量配置说明，移除了不必要的 API 地址&#10;- 精简了联系与反馈信息" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs(README): 更新项目文档和截图&#10;&#10;- 重构了 README.md 文件，增加了项目概述、技术栈、核心功能等详细信息&#10;- 添加了项目截图展示，包括首页、个人中心、画廊等界面&#10;- 更新了环境变量配置说明，移除了不必要的 API 地址&#10;- 精简了联系与反馈信息" />
+    <MESSAGE value="feat(gallery): 添加画廊作品详情页面并优化点赞功能&#10;&#10;- 新增画廊作品详情页面，展示作品信息和点赞状态&#10;- 优化点赞功能，使用 likedBy 数组记录点赞用户&#10;- 添加保存图片功能&#10;- 更新画廊列表页面，修复点赞状态显示" />
+    <MESSAGE value="不提交" />
+    <option name="LAST_COMMIT_MESSAGE" value="不提交" />
   </component>
 </project>

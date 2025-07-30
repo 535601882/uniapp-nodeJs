@@ -1,145 +1,184 @@
 const express = require('express');
 const router = express.Router();
-const { OpenAI } = require('openai');
-const axios = require('axios');
-const FormData = require('form-data');
-const fs = require('fs');
-const User = require('../models/User'); // 引入User模型
-const Creation = require('../models/Creation'); // 引入Creation模型
-const CreditRecord = require('../models/CreditRecord'); // 引入CreditRecord模型
+const openai = require('../utils/openai');
+const GenerationTask = require('../models/GenerationTask');
+const Creation = require('../models/Creation');
+const { image2Base64 } = require('../utils/image2Base64'); // 引入图片转Base64工具
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  baseURL: process.env.OPENAI_BASE_URL,
-});
-
-// POST /api/image
-router.post('/', async (req, res) => {
-  const { prompt, images = [], model = 'gpt-4o-image', n = 1, size = '1024x1024' } = req.body;
-  const userId = req.user.id; // 从JWT中获取用户ID
-
-  if (!prompt && (!images || images.length === 0)) {
-    return res.status(400).json({ code: 400, msg: '缺少prompt或图片', data: null });
-  }
-  if (images.length > 10) {
-    return res.status(400).json({ code: 400, msg: '图片数量不能超过10张', data: null });
-  }
-
+// 异步处理函数，模拟后台任务
+const processGenerationTask = async (taskId) => {
   try {
-    const user = await User.findById(userId); // 从数据库获取用户
-    if (!user) {
-      return res.status(404).json({ code: 404, msg: '用户未找到', data: null });
+    const task = await GenerationTask.findById(taskId);
+    if (!task) {
+      console.error(`Task ${taskId} not found for processing.`);
+      return;
     }
 
-    const cost = 1; // 每次生成图片消耗1积分
-    if (user.credits < cost) {
-      return res.status(402).json({ code: 402, msg: '积分不足，请充值', data: null });
-    }
-
-    // 扣除积分
-    user.credits -= cost;
-    await user.save();
-
-    // 记录积分消耗
-    await CreditRecord.create({
-      user: userId,
-      type: 'consume',
-      description: '图片生成消耗',
-      amount: -cost,
-    });
+    task.status = 'processing';
+    await task.save();
 
     let messages = [];
-    let promptWithParams = prompt;
-    if (size) {
-      promptWithParams += `，图片尺寸：${size}`;
-    }
-    if (n) {
-      promptWithParams += `，图片数量：${n}`;
-    }
-    // 判断是否有图片
-    if (images.length > 0) {
-      // 只取第一张图片，按API示例格式
-      let image_url = images.map(item => ({ type: 'image_url', image_url: { url: item } }));
+
+    if (task.inputImageBase64) {
+      // 如果有输入图片，构建多模态消息
       messages.push({
-        role: 'user',
+        role: "user",
         content: [
-          { type: 'text', text: promptWithParams },
-          ...image_url
+          { type: "text", text: task.prompt },
+          { type: "image_url", image_url: { url: task.inputImageBase64 } }
         ]
       });
     } else {
-      // 纯文本
-      messages.push({ role: 'user', content: promptWithParams });
+      // 否则，只包含文本提示词
+      messages.push({ role: "user", content: task.prompt });
     }
-    const params = {
-      max_tokens: 1024,
-      model: model,
-      temperature: 0.8,
-      top_p: 1,
-      presence_penalty: 0,
-      frequency_penalty: 0,
-      messages,
-      stream: false
-    };
-    console.log('params', params);
-    const response = await axios.post(process.env.OPENAI_BASE_URL+'/chat/completions', params, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      timeout: 540000
+
+    // 调用OpenAI Chat Completions API 进行图片生成
+    const chatResponse = await openai.chat.completions.create({
+      model: task.model, // 使用任务中保存的模型
+      messages: messages,
     });
-    // 提取“点击下载”链接
-    const downloadMatch = response.data.choices?.[0]?.message?.content?.match(/https?:\/\/[^\s)]+\.png/i); // 直接匹配URL
-    const imageUrl = downloadMatch ? downloadMatch[0] : null;
 
-    // 保存创作记录到数据库
-    if (imageUrl) {
-      await Creation.create({
-        user: userId,
-        prompt: prompt,
-        image_url: imageUrl,
-        is_public: false, // 默认不公开
-      });
+    console.log('OpenAI chatResponse:', JSON.stringify(chatResponse, null, 2)); // 添加这行日志
+
+    const chatContent = chatResponse.choices[0].message.content;
+    // 使用正则表达式从 Markdown 链接中提取 URL
+    const urlMatch = chatContent.match(/\(https?:\/\/[^)]+\)/);
+    let imageUrl = null;
+    if (urlMatch && urlMatch[0]) {
+      imageUrl = urlMatch[0].substring(1, urlMatch[0].length - 1); // 移除括号
+    } else {
+      // 如果没有匹配到 Markdown 链接，尝试直接使用内容作为 URL (备用)
+      imageUrl = chatContent;
     }
 
-    res.json({ code: 0, msg: '成功', data: { ...response.data, download_links: imageUrl ? [imageUrl] : [] } });
-    return;
-  } catch (err) {
-    console.error('生图服务异常:', err.response?.data || err.message);
-    // 如果是积分不足的错误，返回402
-    if (err.response?.status === 402) {
-      return res.status(402).json({ code: 402, msg: err.response.data.msg, data: null });
+    task.status = 'completed';
+    task.imageUrl = imageUrl;
+    task.openaiResponse = chatResponse; // 保存完整的OpenAI响应
+    await task.save();
+
+    // 任务完成后，也可以选择将图片保存到 Creation 模型中，作为用户的作品
+    await Creation.create({
+      user: task.userId,
+      prompt: task.prompt,
+      image_url: imageUrl,
+      is_public: false, // 默认私有，用户可选择公开
+    });
+
+    console.log(`Task ${taskId} completed. Image URL: ${imageUrl}`);
+  } catch (error) {
+    console.error(`Error processing task ${taskId}:`, error);
+    const task = await GenerationTask.findById(taskId);
+    if (task) {
+      task.status = 'failed';
+      task.error = error.message || 'Unknown error';
+      await task.save();
     }
-    res.status(500).json({ code: 500, msg: '服务器内部错误', data: err.message });
+  }
+};
+
+/**
+ * POST /api/image
+ * 提交图片生成任务
+ */
+router.post('/', async (req, res) => {
+  const { prompt, n = 1, size = '1024x1024', model = 'gpt-image-1' } = req.body; // 从请求体中获取model，默认值为gpt-image-1
+  const userId = req.user.id; // 从JWT获取用户ID
+  let inputImageBase64 = null;
+
+  // 检查是否有文件上传
+  if (req.files && req.files.image) {
+    const inputImage = req.files.image;
+    // 将图片数据转换为Base64编码
+    // 注意：req.files.image.data 是一个 Buffer
+    inputImageBase64 = `data:${inputImage.mimetype};base64,${inputImage.data.toString('base64')}`;
+  }
+
+  if (!prompt && !inputImageBase64) {
+    return res.status(400).json({ code: 400, msg: '缺少提示词或图片', data: null });
+  }
+
+  try {
+    // 创建任务记录
+    const newTask = await GenerationTask.create({
+      userId,
+      prompt,
+      n,
+      size,
+      inputImageBase64, // 保存Base64编码的图片数据
+      model, // 保存模型名称
+      status: 'pending',
+    });
+
+    // 异步处理任务
+    setTimeout(() => processGenerationTask(newTask._id), 0); // 立即异步执行
+
+    res.json({
+      code: 0,
+      msg: '图片生成任务已提交',
+      data: { taskId: newTask._id, status: newTask.status },
+    });
+  } catch (error) {
+    console.error('提交图片生成任务失败:', error);
+    res.status(500).json({ code: 500, msg: '服务器内部错误', data: null });
   }
 });
 
-// POST /api/upload
-router.post('/upload', async (req, res) => {
+/**
+ * GET /api/image/tasks
+ * 获取当前用户的图片生成任务列表
+ * Query: status (optional), page, limit
+ */
+router.get('/tasks', async (req, res) => {
+  const userId = req.user.id;
+  const { status, page = 1, limit = 10 } = req.query;
+
+  let query = { userId };
+  if (status) {
+    query.status = status;
+  }
+
   try {
-    if (!req.files || !req.files.image) {
-      return res.status(400).json({ code: 400, msg: '未检测到图片文件', data: null });
-    }
-    const file = req.files.image;
-    // 将 Buffer 转为 base64
-    const base64 = file.data.toString('base64');
-    const formData = new FormData();
-    formData.append('key', process.env.IMGBB_API_KEY);
-    formData.append('image', base64); // 直接传 base64
-    const imgbbRes = await axios.post(process.env.IMGBB_HOST, formData, {
-      headers: formData.getHeaders(),
-      timeout: 600000
+    const tasks = await GenerationTask.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    const total = await GenerationTask.countDocuments(query);
+
+    res.json({
+      code: 0,
+      msg: '成功',
+      data: {
+        items: tasks,
+        total: total,
+        page: parseInt(page),
+        limit: parseInt(limit),
+      },
     });
-    // console.log("imgbbRes",imgbbRes)
-    if (imgbbRes.data && imgbbRes.data.success && imgbbRes.data.data && imgbbRes.data.data.url) {
-      const imageUrl = imgbbRes.data.data.display_url || imgbbRes.data.data.url;
-      res.json({ code: 0, msg: '成功', data: { url: imageUrl } });
-    } else {
-      res.status(500).json({ code: 500, msg: 'imgbb上传失败', data: imgbbRes.data });
+  } catch (error) {
+    console.error('获取任务列表失败:', error);
+    res.status(500).json({ code: 500, msg: '服务器内部错误', data: null });
+  }
+});
+
+/**
+ * GET /api/image/tasks/:taskId
+ * 获取单个图片生成任务详情
+ */
+router.get('/tasks/:taskId', async (req, res) => {
+  const { taskId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const task = await GenerationTask.findOne({ _id: taskId, userId });
+    if (!task) {
+      return res.status(404).json({ code: 404, msg: '任务未找到或无权限', data: null });
     }
-  } catch (err) {
-    res.status(500).json({ code: 500, msg: '上传服务异常', data: err.message });
+    res.json({ code: 0, msg: '成功', data: task });
+  } catch (error) {
+    console.error('获取任务详情失败:', error);
+    res.status(500).json({ code: 500, msg: '服务器内部错误', data: null });
   }
 });
 

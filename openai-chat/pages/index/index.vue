@@ -57,24 +57,14 @@ const prompt = ref('');
 const uploadImages = ref([]);
 const resultImage = ref(null);
 const loading = ref(false);
+const generating = ref(false);
 
 const chooseAndUploadImage = () => {
   uni.chooseImage({
     count: 1,
     success: (res) => {
       const filePath = res.tempFilePaths[0];
-      uni.showLoading({ title: '上传中...' });
-      uploadFileWithToken({
-        url: '/api/image/upload',
-        filePath,
-        name: 'image'
-      }).then((uploadRes) => {
-        uploadImages.value.push(uploadRes.url);
-        uni.hideLoading();
-      }).catch(err => {
-        uni.hideLoading();
-        uni.showToast({ title: '上传失败', icon: 'none' });
-      });
+      uploadImages.value = [filePath]; // 只保留一张图片
     }
   });
 };
@@ -83,38 +73,51 @@ const removeImage = (index) => {
   uploadImages.value.splice(index, 1);
 };
 
-const generateImage = async () => {
-  if (!prompt.value.trim() && uploadImages.value.length === 0) {
-    uni.showToast({ title: '请输入描述或上传图片', icon: 'none' });
-    return;
-  }
-  loading.value = true;
-  resultImage.value = null;
-  try {
-    const res = await imageApi.generate({
-      prompt: prompt.value,
-      images: uploadImages.value,
-      n: 1,
-      size: '1024x1024' // 简化示例
-    });
-    if (res.download_links && res.download_links.length > 0) {
-      resultImage.value = res.download_links[0];
-    } else {
-        // 如果没有直接链接，则回退到占位符
-        const content = res.choices[0].message.content;
-        const urlMatch = content.match(/https?:\/\/[^\s)]+\.png/);
-        if(urlMatch) {
-            resultImage.value = urlMatch[0];
+    const generateImage = async () => {
+      if (generating.value) return;
+      if (!prompt.value && uploadImages.value.length === 0) {
+        uni.showToast({ title: '请输入提示词或选择图片', icon: 'none' });
+        return;
+      }
+
+      generating.value = true;
+      try {
+        let result;
+        if (uploadImages.value.length > 0) {
+          // 如果有图片，使用 uploadFileWithToken 上传文件和提示词
+          result = await uploadFileWithToken({
+            url: '/api/image', // 后端图片生成接口
+            filePath: uploadImages.value[0], // 发送第一张选中的图片
+            name: 'image', // 后端接收文件的字段名
+            formData: {
+              prompt: prompt.value, // 将提示词作为表单数据发送
+              // 如果有 n 和 size 等其他参数，也可以在这里添加
+            }
+          });
         } else {
-            uni.showToast({ title: '响应中未找到图片URL', icon: 'none' });
+          // 如果没有图片，使用常规的 submitGeneration (发送 JSON 数据)
+          result = await imageApi.submitGeneration({ prompt: prompt.value });
         }
-    }
-  } catch (error) {
-    uni.showToast({ title: error.msg || '生成失败', icon: 'none' });
-  } finally {
-    loading.value = false;
-  }
-};
+        prompt.value = ""
+        uploadImages.value = []
+
+        uni.showToast({
+          title: '生成任务已提交，请前往“我的创作”查看进度',
+          icon: 'none',
+          duration: 3000,
+        });
+        // 可以选择自动跳转到我的创作页面
+        uni.navigateTo({ url: '/pages/my_creations/index' });
+      } catch (error) {
+        console.error('提交生成任务失败:', error);
+        uni.showToast({
+          title: error.msg || '提交失败',
+          icon: 'error',
+        });
+      } finally {
+        generating.value = false;
+      }
+    };
 
 const previewResult = () => {
   if (resultImage.value) {
@@ -212,7 +215,11 @@ onShareTimeline(() => {
   width: 100vw; height: 70vh;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(17,24,39,0) 60%, #111827 100%);
+  background: linear-gradient(to bottom, rgba(17,24,39,0) 50%, #111827 100%);
+}
+.content-wrapper{
+  z-index: 2;
+  position: relative;
 }
 .header-title{
   font-weight: 700;
