@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Creation = require('../models/Creation'); // 引入Creation模型
 const User = require('../models/User'); // 引入User模型
 
@@ -10,14 +11,15 @@ const User = require('../models/User'); // 引入User模型
  */
 router.get('/public', async (req, res) => {
   const { page = 1, limit = 10, sort = 'newest' } = req.query;
-  const userId = req.user.id; // 当前用户ID，用于判断是否已点赞
+  const userId = req.user ? req.user.id : null; // 当前用户ID，用于判断是否已点赞
 
   try {
     let query = { is_public: true };
     let sortOptions = {};
 
     if (sort === 'hottest') {
-      sortOptions = { likes: -1, createdAt: -1 };
+      // For 'hottest', we sort by the size of the likedBy array
+      sortOptions = { 'likedBy.length': -1, createdAt: -1 };
     } else { // newest
       sortOptions = { createdAt: -1 };
     }
@@ -30,13 +32,16 @@ router.get('/public', async (req, res) => {
 
     const total = await Creation.countDocuments(query);
 
-    // 模拟点赞状态 (实际需要一个liked_by数组来判断)
-    const itemsWithLikeStatus = creations.map(item => ({
-      ...item.toObject(),
-      author_name: item.user ? item.user.nickname : '未知用户',
-      author_avatar: item.user ? item.user.avatar_url : 'https://i.pravatar.cc/40',
-      is_liked: false, // 暂时模拟为false，实际需要判断当前用户是否在item.liked_by中
-    }));
+    const itemsWithLikeStatus = creations.map(item => {
+      const isLiked = userId ? item.likedBy.includes(userId) : false;
+      return {
+        ...item.toObject(),
+        author_name: item.user ? item.user.nickname : '未知用户',
+        author_avatar: item.user ? item.user.avatar_url : 'https://i.pravatar.cc/40',
+        is_liked: isLiked,
+        likes: item.likedBy.length, // Use the length of likedBy array for likes count
+      };
+    });
 
     res.json({
       code: 0,
@@ -55,12 +60,49 @@ router.get('/public', async (req, res) => {
 });
 
 /**
+ * GET /api/gallery/:id
+ * 获取单个画廊作品详情。
+ */
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user ? req.user.id : null; // 当前用户ID
+
+  try {
+    const creation = await Creation.findById(id).populate('user', 'nickname avatar_url');
+    if (!creation || !creation.is_public) {
+      return res.status(404).json({ code: 404, msg: '作品未找到或不是公开作品', data: null });
+    }
+
+    const isLiked = userId ? creation.likedBy.includes(userId) : false;
+
+    res.json({
+      code: 0,
+      msg: '成功',
+      data: {
+        ...creation.toObject(),
+        author_name: creation.user ? creation.user.nickname : '未知用户',
+        author_avatar: creation.user ? creation.user.avatar_url : 'https://i.pravatar.cc/40',
+        is_liked: isLiked,
+        likes: creation.likedBy.length,
+      }
+    });
+  } catch (error) {
+    console.error('获取作品详情失败:', error);
+    res.status(500).json({ code: 500, msg: '服务器内部错误', data: null });
+  }
+});
+
+/**
  * POST /api/gallery/like/:id
  * 点赞或取消点赞作品。
  */
 router.post('/like/:id', async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id; // 从JWT中获取用户ID
+  const userId = req.user ? req.user.id : null; // 从JWT中获取用户ID
+
+  if (!userId) {
+    return res.status(401).json({ code: 401, msg: '未授权', data: null });
+  }
 
   try {
     const creation = await Creation.findById(id);
@@ -68,19 +110,20 @@ router.post('/like/:id', async (req, res) => {
       return res.status(404).json({ code: 404, msg: '作品未找到', data: null });
     }
 
-    // 模拟点赞逻辑：每次调用都切换点赞状态并增减likes
-    // 实际应用中，需要维护一个liked_by数组，防止重复点赞/取消点赞
-    const isLiked = false; // 假设当前用户未点赞
-    if (!isLiked) {
-      creation.likes += 1;
-      // creation.liked_by.push(userId); // 实际应用中
+    const userObjectId = new mongoose.Types.ObjectId(userId); // Convert userId to ObjectId
+
+    const isLiked = creation.likedBy.includes(userObjectId);
+
+    if (isLiked) {
+      // If already liked, unlike it
+      creation.likedBy = creation.likedBy.filter(uid => !uid.equals(userObjectId));
     } else {
-      creation.likes -= 1;
-      // creation.liked_by = creation.liked_by.filter(uid => uid.toString() !== userId.toString()); // 实际应用中
+      // If not liked, like it
+      creation.likedBy.push(userObjectId);
     }
     await creation.save();
 
-    res.json({ code: 0, msg: '成功', data: { id: creation._id, is_liked: !isLiked, likes: creation.likes } });
+    res.json({ code: 0, msg: '成功', data: { id: creation._id, is_liked: !isLiked, likes: creation.likedBy.length } });
   } catch (error) {
     console.error('点赞操作失败:', error);
     res.status(500).json({ code: 500, msg: '服务器内部错误', data: null });

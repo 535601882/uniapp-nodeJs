@@ -15,7 +15,7 @@
         <view v-for="record in records" :key="record.id" class="record-item">
           <view class="item-details">
             <text class="item-description">{{ record.description }}</text>
-            <text class="item-date">{{ new Date(record.created_at).toLocaleDateString() }}</text>
+            <text class="item-date">{{ new Date(record.createdAt).toLocaleDateString() }}</text>
           </view>
           <text :class="['item-amount', record.amount > 0 ? 'positive' : 'negative']">
             {{ record.amount > 0 ? '+' : '' }}{{ record.amount }}

@@ -4,13 +4,19 @@
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "AI创作引擎",
-		"navigationStyle": "custom"
+		    "navigationStyle": "custom"
       }
     },
     {
       "path": "pages/gallery/index",
       "style": {
         "navigationBarTitleText": "画廊"
+      }
+    },
+    {
+      "path": "pages/gallery/detail",
+      "style": {
+        "navigationBarTitleText": "作品详情"
       }
     },
     {

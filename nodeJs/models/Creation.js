@@ -19,12 +19,11 @@ const CreationSchema = mongoose.Schema(
       type: Boolean,
       default: false, // By default, creations are private
     },
-    likes: {
-      type: Number,
-      default: 0,
-    },
-    // In a real app, you might store an array of user IDs who liked this creation
-    // liked_by: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    likedBy: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: [],
+    }],
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields

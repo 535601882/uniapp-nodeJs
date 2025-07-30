@@ -153,7 +153,8 @@ export const historyApi = {
 
 export const galleryApi = {
   getPublic: (params) => request({ url: '/api/gallery/public', method: 'GET', data: params }),
-  like: (id) => request({ url: `/api/gallery/like/${id}`, method: 'POST' }),
+  getDetail: (id) => request({ url: `/api/gallery/${id}`, method: 'GET' }),
+  toggleLike: (id) => request({ url: `/api/gallery/like/${id}`, method: 'POST' }),
 };
 
 export const balanceApi = {

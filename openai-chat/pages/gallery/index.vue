@@ -75,16 +75,8 @@ const loadMore = () => {
 };
 
 const goToDetail = (item) => {
-  uni.previewImage({
-    urls: [item.image_url],
-    current: item.image_url,
-    success: () => {
-      uni.showToast({
-        title: `提示词: ${item.prompt}`,
-        icon: 'none',
-        duration: 3000
-      });
-    }
+  uni.navigateTo({
+    url: `/pages/gallery/detail?id=${item._id}`,
   });
 };
 
