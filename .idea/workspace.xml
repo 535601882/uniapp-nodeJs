@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fb2c06f1-6c09-49e4-aa30-618245879d8c" name="更改" comment="feat(image): 重构图片生成功能并添加任务管理&#10;&#10;- 重构了图片生成 API，增加了任务提交、查询等功能&#10;- 新增了 GenerationTask 模型来管理生成任务&#10;- 更新了前端逻辑，支持异步生成任务&#10;- 添加了任务列表和详情页面">
+    <list default="true" id="fb2c06f1-6c09-49e4-aa30-618245879d8c" name="更改" comment="fix(my_creations): 优化我的创作页面生命周期管理&#10;&#10;- 在 detail.vue 和 index.vue 中添加 onHide 和 onUnload 生命周期函数&#10;- 实现 stopPolling 方法以停止轮询- 在 onHide 和 onUnload 中调用 stopPolling 以节省资源">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pages/my_creations/detail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages/my_creations/detail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/openai-chat/pages/my_creations/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/pages/my_creations/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/common/vendor.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/mp-weixin/common/vendor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshot/我的.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshot/我的.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshot/我的创作.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshot/我的创作.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshot/画廊.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshot/画廊.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screenshot/首页.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshot/首页.png" afterDir="false" />
     </list>
     <list id="9f328673-c14c-45ba-92b6-d1050e612890" name="不提交" comment="不提交">
       <change beforePath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/openai-chat/unpackage/dist/dev/.sourcemap/mp-weixin/app.js.map" afterDir="false" />
@@ -117,7 +120,7 @@
       <workItem from="1751710946593" duration="779000" />
       <workItem from="1751711741829" duration="1007000" />
       <workItem from="1752487121754" duration="715000" />
-      <workItem from="1753776556833" duration="30654000" />
+      <workItem from="1753776556833" duration="31146000" />
     </task>
     <task id="LOCAL-00001" summary="微信小程序+openai">
       <option name="closed" value="true" />
@@ -183,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753847483659</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fix(my_creations): 优化我的创作页面生命周期管理&#10;&#10;- 在 detail.vue 和 index.vue 中添加 onHide 和 onUnload 生命周期函数&#10;- 实现 stopPolling 方法以停止轮询- 在 onHide 和 onUnload 中调用 stopPolling 以节省资源">
+      <option name="closed" value="true" />
+      <created>1753849142267</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1753849142267</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,6 +219,7 @@
     <MESSAGE value="feat(gallery): 添加画廊作品详情页面并优化点赞功能&#10;&#10;- 新增画廊作品详情页面，展示作品信息和点赞状态&#10;- 优化点赞功能，使用 likedBy 数组记录点赞用户&#10;- 添加保存图片功能&#10;- 更新画廊列表页面，修复点赞状态显示" />
     <MESSAGE value="不提交" />
     <MESSAGE value="feat(image): 重构图片生成功能并添加任务管理&#10;&#10;- 重构了图片生成 API，增加了任务提交、查询等功能&#10;- 新增了 GenerationTask 模型来管理生成任务&#10;- 更新了前端逻辑，支持异步生成任务&#10;- 添加了任务列表和详情页面" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(image): 重构图片生成功能并添加任务管理&#10;&#10;- 重构了图片生成 API，增加了任务提交、查询等功能&#10;- 新增了 GenerationTask 模型来管理生成任务&#10;- 更新了前端逻辑，支持异步生成任务&#10;- 添加了任务列表和详情页面" />
+    <MESSAGE value="fix(my_creations): 优化我的创作页面生命周期管理&#10;&#10;- 在 detail.vue 和 index.vue 中添加 onHide 和 onUnload 生命周期函数&#10;- 实现 stopPolling 方法以停止轮询- 在 onHide 和 onUnload 中调用 stopPolling 以节省资源" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(my_creations): 优化我的创作页面生命周期管理&#10;&#10;- 在 detail.vue 和 index.vue 中添加 onHide 和 onUnload 生命周期函数&#10;- 实现 stopPolling 方法以停止轮询- 在 onHide 和 onUnload 中调用 stopPolling 以节省资源" />
   </component>
 </project>

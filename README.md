@@ -76,11 +76,21 @@
 ### 画廊
 ![画廊](screenshot/画廊.png)
 
+### 画廊详情
+![画廊详情](screenshot/画廊详情.png)
+
 ### 积分记录
 ![积分记录](screenshot/积分记录.png)
 
 ### 我的创作
 ![我的创作](screenshot/我的创作.png)
+
+### 创作详情
+![创作详情](screenshot/创作详情.png)
+
+### 我的历史
+![我的历史](screenshot/我的历史.png)
+
 
 ### 设置
 ![设置](screenshot/设置.png)
