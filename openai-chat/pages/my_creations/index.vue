@@ -24,7 +24,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { onHide } from '@dcloudio/uni-app'
+import { onHide,onUnload } from '@dcloudio/uni-app'
 import { imageApi } from '@/utils/api';
 
 const tasks = ref([]);
@@ -87,15 +87,24 @@ const startPolling = () => {
   }, 5000); // 每5秒轮询一次
 };
 
+const stopPolling = () => {
+  if (pollingInterval) {
+    clearInterval(pollingInterval);
+  }
+}
 onMounted(() => {
   fetchTasks(true);
   startPolling();
 });
 
 onHide(() => {
-  if (pollingInterval) {
-    clearInterval(pollingInterval);
-  }
+  console.log('onHide')
+  stopPolling()
+});
+
+onUnload(() => {
+  console.log('onUnload')
+  stopPolling()
 });
 </script>
 

@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { onLoad,onHide } from '@dcloudio/uni-app';
+import { onLoad,onHide,onUnload } from '@dcloudio/uni-app';
 import { imageApi } from '@/utils/api';
 
 const task = ref(null);
@@ -132,6 +132,12 @@ const stopPolling = () => {
 };
 
 onHide(() => {
+  console.log('onHide')
+  stopPolling();
+});
+
+onUnload(() => {
+  console.log('onUnload')
   stopPolling();
 });
 </script>
